@@ -1,2 +1,6 @@
 bin/evtest
 bin/termsp
+lib/libsdlfox.so.0
+lib/libvterm.so
+res/fonts/Hack-Regular.ttf
+res/fonts/Hack-Bold.ttf

@@ -16,7 +16,7 @@ service_on() {
         mv "$progdir/log/service.log" "$progdir/log/service.log.old"
     fi
 
-    "$progdir/bin/termsp" >"$progdir/log/service.log" 2>&1
+    "$progdir/bin/termsp" -f "$progdir/res/fonts/Hack-Regular.ttf" -b "$progdir/res/fonts/Hack-Bold.ttf" >"$progdir/log/service.log" 2>&1
 }
 
 service_off() {

@@ -2,3 +2,5 @@ bin/*
 !bin/.gitkeep
 lib/*
 !lib/.gitkeep
+res/fonts/*
+!res/fonts/.gitkeep
