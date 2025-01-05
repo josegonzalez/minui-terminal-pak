@@ -1,5 +1,5 @@
 {
-    "label": "SSH Server",
+    "label": "Terminal",
     "launch": "launch.sh",
-    "description": "Manages the SSH Server"
+    "description": "Manages the Terminal"
 }
