@@ -29,8 +29,8 @@ lib/libsdlfox.so:
 	docker container cp extract:/go/src/github.com/Nevrdid/TermSP/libs/libsdlfox.so lib/libsdlfox.so
 	docker container rm extract
 
-lib/libvterm.so:
+lib/libvterm.so.0:
 	docker buildx build --platform linux/arm64 --load --build-arg BUILD_DATE=$(BUILD_DATE) -f Dockerfile.termsp --progress plain -t app/termsp:$(TAG) .
 	docker container create --name extract app/termsp:$(TAG)
-	docker container cp extract:/go/src/github.com/Nevrdid/TermSP/libs/libvterm.so lib/libvterm.so
+	docker container cp extract:/go/src/github.com/Nevrdid/TermSP/libs/libvterm.so lib/libvterm.so.0
 	docker container rm extract
