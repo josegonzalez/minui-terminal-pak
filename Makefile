@@ -4,12 +4,12 @@ BUILD_DATE := "$(shell date -u +%FT%TZ)"
 clean:
 	rm -f bin/evtest || true
 	rm -f bin/termsp || true
-	rm -f lib/libsdlfox.so.0 || true
-	rm -f lib/libvterm.so || true
+	rm -f lib/libsdlfox.so || true
+	rm -f lib/libvterm.so.0 || true
 	rm -f res/fonts/Hack-Regular.ttf || true
 	rm -f res/fonts/Hack-Bold.ttf || true
 
-build: bin/evtest bin/termsp lib/libsdlfox.so.0 lib/libvterm.so res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf
+build: bin/evtest bin/termsp lib/libsdlfox.so lib/libvterm.so.0 res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf
 
 bin/evtest:
 	docker buildx build --platform linux/arm64 --load -f Dockerfile.evtest --progress plain -t app/evtest:$(TAG) .
