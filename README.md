@@ -4,7 +4,7 @@ A TrimUI Brick app wrapping [`TermSP`](https://github.com/Nevrdid/TermSP), an te
 
 ## Requirements
 
-- Rust (for building)
+- Docker (for building)
 
 ## Building
 

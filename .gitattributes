@@ -3,5 +3,5 @@
 .gitarchiveinclude export-ignore
 .gitignore export-ignore
 Dockerfile.evtest export-ignore
-Dockerfile.st export-ignore
+Dockerfile.termsp export-ignore
 Makefile export-ignore
