@@ -1,0 +1,24 @@
+FROM golang:1.20.5-buster
+
+ARG TERMSP_VERSION=391f0909d86df038c0fa749a619eb7a947358481
+ENV TERMSP_VERSION=$TERMSP_VERSION
+
+RUN git clone https://github.com/Nevrdid/TermSP /go/src/github.com/Nevrdid/TermSP && \
+    git -C /go/src/github.com/Nevrdid/TermSP checkout "$TERMSP_VERSION"
+
+WORKDIR /go/src/github.com/Nevrdid/TermSP
+
+ENV GOOS=linux
+ENV GOARCH=arm64
+ENV CGO_ENABLED=1
+ENV CROSS_COMPILE=aarch64-linux-gnu-
+ENV CC=aarch64-linux-gnu-gcc
+
+RUN apt update && apt install -y libsdl2-dev libsdl2-ttf-dev libsdl2-image-dev libtool-bin libfontconfig
+RUN cd libvterm-0.3.3 && make
+RUN mkdir -p build && make all
+
+RUN apt-get update && apt-get install -y file
+
+RUN ls -lah /go/src/github.com/Nevrdid/TermSP/build
+RUN file /go/src/github.com/Nevrdid/TermSP/build/TermSP
