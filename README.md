@@ -1,6 +1,6 @@
 # trimui-brick-terminal.pak
 
-A TrimUI Brick app wrapping [`TermSP`](https://github.com/Nevrdid/TermSP), an terminal emulator.
+A TrimUI Brick app wrapping [`TermSP`](https://github.com/Nevrdid/TermSP), a terminal emulator.
 
 ## Requirements
 

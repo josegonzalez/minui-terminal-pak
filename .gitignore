@@ -1,6 +1,7 @@
+dist
 bin/*
 !bin/.gitkeep
-lib/*
-!lib/.gitkeep
+log/*
+!log/.gitkeep
 res/fonts/*
 !res/fonts/.gitkeep

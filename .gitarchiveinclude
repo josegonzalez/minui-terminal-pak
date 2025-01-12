@@ -1,6 +1,8 @@
 bin/evtest
+bin/sdl2imgshow
 bin/termsp
 lib/libsdlfox.so
 lib/libvterm.so.0
+res/fonts/BPreplayBold.otf
 res/fonts/Hack-Regular.ttf
 res/fonts/Hack-Bold.ttf
