@@ -9,7 +9,7 @@ A TrimUI Brick app wrapping [`TermSP`](https://github.com/Nevrdid/TermSP), a ter
 ## Building
 
 ```shell
-make build
+make release
 ```
 
 ## Installation
