@@ -1,6 +1,6 @@
 FROM golang:1.20.5-buster
 
-ARG TERMSP_VERSION=391f0909d86df038c0fa749a619eb7a947358481
+ARG TERMSP_VERSION=1e3ed39d36ebc0710d68a660cb5bd42c0a987037
 ENV TERMSP_VERSION=$TERMSP_VERSION
 
 RUN git clone https://github.com/Nevrdid/TermSP /go/src/github.com/Nevrdid/TermSP && \
