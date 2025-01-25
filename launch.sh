@@ -9,9 +9,10 @@ BUTTON_LOG="$progdir/log/buttons.log"
 
 SERVICE_NAME="termsp"
 HUMAN_READABLE_NAME="Terminal"
-SUPPORTS_DAEMON_MODE=0
+ONLY_LAUNCH_THEN_EXIT=1
+LAUNCHES_SCRIPT="false"
 service_on() {
-    cd /mnt/SDCARD/ || exit
+    cd "$SDCARD_PATH" || exit 1
     if [ -f "$progdir/log/service.log" ]; then
         mv "$progdir/log/service.log" "$progdir/log/service.log.old"
     fi
@@ -118,11 +119,25 @@ wait_for_button() {
     done
 }
 
+is_service_running() {
+    if pgrep "$SERVICE_NAME" >/dev/null 2>&1; then
+        return 0
+    fi
+
+    if [ "$LAUNCHES_SCRIPT" = "true" ]; then
+        if pgrep -fn "$SERVICE_NAME" >/dev/null 2>&1; then
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
 wait_for_service() {
     max_counter="$1"
     counter=0
 
-    while ! pgrep "$SERVICE_NAME" >/dev/null 2>&1; do
+    while ! is_service_running; do
         counter=$((counter + 1))
         if [ "$counter" -gt "$max_counter" ]; then
             return 1
@@ -133,7 +148,7 @@ wait_for_service() {
 
 main_daemonize() {
     echo "Toggling $SERVICE_NAME..."
-    if pgrep "$SERVICE_NAME"; then
+    if is_service_running; then
         show_message "Disabling the $HUMAN_READABLE_NAME" 2
         service_off
     else
@@ -150,7 +165,7 @@ main_daemonize() {
 }
 
 main_process() {
-    if pgrep "$SERVICE_NAME"; then
+    if is_service_running; then
         show_message "Disabling the $HUMAN_READABLE_NAME" 2
         service_off
     fi
@@ -178,7 +193,7 @@ main_process() {
 }
 
 main() {
-    if [ "$SUPPORTS_DAEMON_MODE" -eq 0 ]; then
+    if [ "$ONLY_LAUNCH_THEN_EXIT" -eq 1 ]; then
         service_on
         return $?
     fi
