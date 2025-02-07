@@ -27,3 +27,13 @@ make release
 ## Usage
 
 Just launch it.
+
+### shell
+
+The terminal detects the available shells and uses the first one it finds. To utilize a different shell, create a file named `shell` in the pak folder with the full path to the shell you wish to execute.
+
+The order of shell detection is as follows:
+
+1. `/usr/bin/bash`
+2. `/bin/bash`
+3. `/bin/sh`
