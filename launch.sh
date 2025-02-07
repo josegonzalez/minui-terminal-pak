@@ -17,7 +17,22 @@ service_on() {
         mv "$progdir/log/service.log" "$progdir/log/service.log.old"
     fi
 
-    "$progdir/bin/termsp" -s 27 -f "$progdir/res/fonts/Hack-Regular.ttf" -b "$progdir/res/fonts/Hack-Bold.ttf" >"$progdir/log/service.log" 2>&1
+    shell="$SHELL"
+    if [ -f "$progdir/shell" ]; then
+        shell="$(cat "$progdir/shell")"
+    fi
+
+    if [ -x "/usr/bin/bash" ]; then
+        shell="/usr/bin/bash"
+    elif [ -x "/bin/bash" ]; then
+        shell="/bin/bash"
+    fi
+
+    if [ -z "$shell" ]; then
+        shell="/bin/sh"
+    fi
+
+    SHELL="$shell" "$progdir/bin/termsp" -s 27 -f "$progdir/res/fonts/Hack-Regular.ttf" -b "$progdir/res/fonts/Hack-Bold.ttf" >"$progdir/log/service.log" 2>&1
 }
 
 service_off() {
@@ -32,7 +47,7 @@ show_message() {
         seconds="forever"
     fi
 
-    killall sdl2imgshow
+    killall sdl2imgshow 2>/dev/null || true
     echo "$message"
     if [ "$seconds" = "forever" ]; then
         "$progdir/bin/sdl2imgshow" \
@@ -41,7 +56,7 @@ show_message() {
             -s 27 \
             -c "220,220,220" \
             -q \
-            -t "$message" &
+            -t "$message" >/dev/null 2>&1 &
     else
         "$progdir/bin/sdl2imgshow" \
             -i "$progdir/res/background.png" \
@@ -49,7 +64,7 @@ show_message() {
             -s 27 \
             -c "220,220,220" \
             -q \
-            -t "$message"
+            -t "$message" >/dev/null 2>&1
         sleep "$seconds"
     fi
 }
@@ -203,7 +218,7 @@ main() {
     else
         main_process
     fi
-    killall sdl2imgshow
+    killall sdl2imgshow 2>/dev/null || true
 }
 
 mkdir -p "$progdir/log"
