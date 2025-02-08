@@ -2,6 +2,8 @@
 echo "$0" "$@"
 progdir="$(dirname "$0")"
 cd "$progdir" || exit 1
+[ -f "$progdir/debug" ] && set -x
+PAK_NAME="$(basename "$progdir")"
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$progdir/lib"
 echo 1 >/tmp/stay_awake
 
@@ -10,10 +12,7 @@ HUMAN_READABLE_NAME="Terminal"
 ONLY_LAUNCH_THEN_EXIT=1
 LAUNCHES_SCRIPT="false"
 service_on() {
-    cd "$SDCARD_PATH" || exit 1
-    if [ -f "$progdir/log/service.log" ]; then
-        mv "$progdir/log/service.log" "$progdir/log/service.log.old"
-    fi
+    cd "$SDCARD_PATH" || return 1
 
     if [ -f "$progdir/shell" ]; then
         shell="$(cat "$progdir/shell")"
@@ -39,7 +38,7 @@ service_on() {
         fi
     fi
 
-    SHELL="$shell" "$progdir/bin/termsp" -s 27 -f "$progdir/res/fonts/Hack-Regular.ttf" -b "$progdir/res/fonts/Hack-Bold.ttf" >"$progdir/log/service.log" 2>&1
+    SHELL="$shell" "$progdir/bin/termsp" -s 27 -f "$progdir/res/fonts/Hack-Regular.ttf" -b "$progdir/res/fonts/Hack-Bold.ttf" >"$LOGS_PATH/$PAK_NAME.service.txt" 2>&1
 }
 
 service_off() {
@@ -182,9 +181,4 @@ main() {
     killall sdl2imgshow >/dev/null 2>&1 || true
 }
 
-mkdir -p "$progdir/log"
-if [ -f "$progdir/log/launch.log" ]; then
-    mv "$progdir/log/launch.log" "$progdir/log/launch.log.old"
-fi
-
-main "$@" >"$progdir/log/launch.log" 2>&1
+main "$@" >"$LOGS_PATH/$PAK_NAME.txt" 2>&1
