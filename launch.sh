@@ -157,12 +157,12 @@ main() {
     allowed_platforms="tg5040 rg35xxplus"
     if ! echo "$allowed_platforms" | grep -q "$PLATFORM"; then
         show_message "$PLATFORM is not a supported platform" 2
-        exit 1
+        return 1
     fi
 
     if [ ! -f "$progdir/bin/minui-btntest-$PLATFORM" ]; then
         show_message "$progdir/bin/minui-btntest-$PLATFORM not found" 2
-        exit 1
+        return 1
     fi
 
     chmod +x "$progdir/bin/minui-btntest-$PLATFORM"
