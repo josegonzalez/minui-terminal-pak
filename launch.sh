@@ -17,19 +17,28 @@ service_on() {
         mv "$progdir/log/service.log" "$progdir/log/service.log.old"
     fi
 
-    shell="$SHELL"
     if [ -f "$progdir/shell" ]; then
         shell="$(cat "$progdir/shell")"
     fi
 
-    if [ -x "/usr/bin/bash" ]; then
-        shell="/usr/bin/bash"
-    elif [ -x "/bin/bash" ]; then
-        shell="/bin/bash"
-    fi
-
     if [ -z "$shell" ]; then
-        shell="/bin/sh"
+        if [ -x "/usr/bin/bash" ]; then
+            shell="/usr/bin/bash"
+        elif [ -x "/bin/bash" ]; then
+            shell="/bin/bash"
+        fi
+
+        if [ -z "$shell" ]; then
+            shell="$SHELL"
+        fi
+
+        if [ -z "$shell" ]; then
+            shell="/bin/sh"
+        fi
+
+        if [ ! -x "$shell" ]; then
+            shell="/bin/sh"
+        fi
     fi
 
     SHELL="$shell" "$progdir/bin/termsp" -s 27 -f "$progdir/res/fonts/Hack-Regular.ttf" -b "$progdir/res/fonts/Hack-Bold.ttf" >"$progdir/log/service.log" 2>&1
