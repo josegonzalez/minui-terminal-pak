@@ -2,8 +2,11 @@ TAG ?= 391f0909d86df038c0fa749a619eb7a947358481
 BUILD_DATE := "$(shell date -u +%FT%TZ)"
 PAK_NAME := $(shell jq -r .label config.json)
 
+PLATFORM ?= tg5040 rg35xxplus
+MINUI_BTNTEST_VERSION := 0.2.0
+
 clean:
-	rm -f bin/evtest || true
+	rm -f bin/minui-btntest-* || true
 	rm -f bin/sdl2imgshow || true
 	rm -f bin/termsp || true
 	rm -f lib/libsdlfox.so || true
@@ -12,14 +15,11 @@ clean:
 	rm -f res/fonts/Hack-Regular.ttf || true
 	rm -f res/fonts/Hack-Bold.ttf || true
 
-build: bin/evtest bin/sdl2imgshow bin/termsp lib/libsdlfox.so lib/libvterm.so.0 res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf res/fonts/BPreplayBold.otf
+build: $(foreach platform,$(PLATFORMS),bin/minui-btntest-$(platform)) bin/sdl2imgshow bin/termsp lib/libsdlfox.so lib/libvterm.so.0 res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf res/fonts/BPreplayBold.otf
 
-bin/evtest:
-	docker buildx build --platform linux/arm64 --load -f Dockerfile.evtest --progress plain -t app/evtest:$(TAG) .
-	docker container create --name extract app/evtest:$(TAG)
-	docker container cp extract:/go/src/github.com/freedesktop/evtest/evtest bin/evtest
-	docker container rm extract
-	chmod +x bin/evtest
+bin/minui-btntest-%:
+	curl -f -o bin/minui-btntest-$* -sSL https://github.com/josegonzalez/minui-btntest/releases/download/$(MINUI_BTNTEST_VERSION)/minui-btntest-$*
+	chmod +x bin/minui-btntest-$*
 
 bin/sdl2imgshow:
 	docker buildx build --platform linux/arm64 --load -f Dockerfile.sdl2imgshow --progress plain -t app/sdl2imgshow:$(TAG) .
