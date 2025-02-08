@@ -1,4 +1,5 @@
-bin/evtest
+bin/minui-btntest-tg5040
+bin/minui-btntest-rg35xxplus
 bin/sdl2imgshow
 bin/termsp
 lib/libsdlfox.so
