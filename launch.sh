@@ -56,7 +56,7 @@ show_message() {
         seconds="forever"
     fi
 
-    killall sdl2imgshow 2>/dev/null || true
+    killall sdl2imgshow >/dev/null 2>&1 || true
     echo "$message"
     if [ "$seconds" = "forever" ]; then
         "$progdir/bin/sdl2imgshow" \
@@ -227,7 +227,7 @@ main() {
     else
         main_process
     fi
-    killall sdl2imgshow 2>/dev/null || true
+    killall sdl2imgshow >/dev/null 2>&1 || true
 }
 
 mkdir -p "$progdir/log"
