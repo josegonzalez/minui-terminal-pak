@@ -1,6 +1,6 @@
 # minui-terminal.pak
 
-A MinUI Pak wrapping [`TermSP`](https://github.com/Nevrdid/TermSP), a terminal emulator.
+A MinUI app wrapping [`TermSP`](https://github.com/Nevrdid/TermSP), a terminal emulator.
 
 ## Requirements
 
@@ -22,7 +22,7 @@ Use the correct platform for your device.
 
 ## Usage
 
-Just launch it.
+Browse to `Tools > Terminal` and press `A` to turn on the terminal.
 
 ### shell
 
