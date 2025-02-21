@@ -83,12 +83,11 @@ main() {
         return 1
     fi
 
-    if [ ! -f "$progdir/bin/minui-btntest-$PLATFORM" ]; then
-        show_message "$progdir/bin/minui-btntest-$PLATFORM not found" 2
+    if [ ! -f "$progdir/bin/sdl2imgshow" ]; then
+        show_message "$progdir/bin/sdl2imgshow not found" 2
         return 1
     fi
 
-    chmod +x "$progdir/bin/minui-btntest-$PLATFORM"
     chmod +x "$progdir/bin/sdl2imgshow"
 
     service_on
