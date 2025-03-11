@@ -33,3 +33,7 @@ The order of shell detection is as follows:
 1. `/usr/bin/bash`
 2. `/bin/bash`
 3. `/bin/sh`
+
+### Debug Logging
+
+To enable debug logging, create a file named `debug` in the `$SDCARD_PATH/.userdata/$PLATFORM/Terminal` folder. Logs will be written to the `$SDCARD_PATH/.userdata/$PLATFORM/logs/` folder.
