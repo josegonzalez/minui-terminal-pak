@@ -20,8 +20,6 @@ fi
 export LD_LIBRARY_PATH="$PAK_DIR/lib/$architecture:$LD_LIBRARY_PATH"
 export PATH="$PAK_DIR/bin/$architecture:$PAK_DIR/bin/$PLATFORM:$PAK_DIR/bin:$PATH"
 
-SERVICE_NAME="termsp"
-
 service_on() {
     cd "$SDCARD_PATH" || return 1
 
