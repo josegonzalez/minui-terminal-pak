@@ -1,7 +1,7 @@
 bin/arm64/termsp
 bin/rg35xxplus/minui-presenter
 bin/tg5040/minui-presenter
-lib/libsdlfox.so
-lib/libvterm.so.0
+lib/arm64/libsdlfox.so
+lib/arm64/libvterm.so.0
 res/fonts/Hack-Bold.ttf
 res/fonts/Hack-Regular.ttf
