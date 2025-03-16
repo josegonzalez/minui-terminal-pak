@@ -1,5 +1,9 @@
 {
     "label": "Terminal",
     "launch": "launch.sh",
-    "description": "Manages the Terminal"
+    "description": "Manages the Terminal",
+    "platforms": [
+        "rg35xxplus",
+        "tg5040"
+    ]
 }
