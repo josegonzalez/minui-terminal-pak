@@ -1,61 +1,45 @@
-TAG ?= 391f0909d86df038c0fa749a619eb7a947358481
-BUILD_DATE := "$(shell date -u +%FT%TZ)"
 PAK_NAME := $(shell jq -r .label config.json)
 
-PLATFORM ?= tg5040 rg35xxplus
-MINUI_BTNTEST_VERSION := 0.2.0
+ARCHITECTURES := arm64
+PLATFORMS := rg35xxplus tg5040
+MINUI_PRESENTER_VERSION := 0.3.1
+TERMSP_VERSION=0.1.0
 
 clean:
-	rm -f bin/minui-btntest-* || true
-	rm -f bin/sdl2imgshow || true
-	rm -f bin/termsp || true
+	rm -f bin/*/minui-presenter || true
+	rm -f bin/*/termsp || true
 	rm -f lib/libsdlfox.so || true
 	rm -f lib/libvterm.so.0 || true
-	rm -f res/fonts/BPreplayBold.otf || true
 	rm -f res/fonts/Hack-Regular.ttf || true
 	rm -f res/fonts/Hack-Bold.ttf || true
 
-build: $(foreach platform,$(PLATFORMS),bin/minui-btntest-$(platform)) bin/sdl2imgshow bin/termsp lib/libsdlfox.so lib/libvterm.so.0 res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf res/fonts/BPreplayBold.otf
+build: $(foreach platform,$(PLATFORMS),bin/$(platform)/minui-presenter) $(foreach architecture,$(ARCHITECTURES),bin/$(architecture)/termsp lib/$(architecture)/libsdlfox.so lib/$(architecture)/libvterm.so.0) res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf
 
-bin/minui-btntest-%:
-	curl -f -o bin/minui-btntest-$* -sSL https://github.com/josegonzalez/minui-btntest/releases/download/$(MINUI_BTNTEST_VERSION)/minui-btntest-$*
-	chmod +x bin/minui-btntest-$*
+bin/%/minui-presenter:
+	mkdir -p bin/$*
+	curl -f -o bin/$*/minui-presenter -sSL https://github.com/josegonzalez/minui-presenter/releases/download/$(MINUI_PRESENTER_VERSION)/minui-presenter-$*
+	chmod +x bin/$*/minui-presenter
 
-bin/sdl2imgshow:
-	docker buildx build --platform linux/arm64 --load -f Dockerfile.sdl2imgshow --progress plain -t app/sdl2imgshow:$(TAG) .
-	docker container create --name extract app/sdl2imgshow:$(TAG)
-	docker container cp extract:/go/src/github.com/kloptops/sdl2imgshow/build/sdl2imgshow bin/sdl2imgshow
-	docker container rm extract
-	chmod +x bin/sdl2imgshow
+bin/arm64/termsp:
+	mkdir -p bin/arm64
+	curl -o bin/arm64/termsp -sSL https://github.com/josegonzalez/compiled-termsp/releases/download/$(TERMSP_VERSION)/termsp-arm64
+	chmod +x bin/arm64/termsp
 
-bin/termsp:
-	docker buildx build --platform linux/arm64 --load --build-arg BUILD_DATE=$(BUILD_DATE) -f Dockerfile.termsp --progress plain -t app/termsp:$(TAG) .
-	docker container create --name extract app/termsp:$(TAG)
-	docker container cp extract:/go/src/github.com/Nevrdid/TermSP/build/TermSP bin/termsp
-	docker container rm extract
-	chmod +x bin/termsp
+lib/arm64/libsdlfox.so:
+	mkdir -p lib/arm64
+	curl -o lib/arm64/libsdlfox.so -sSL https://github.com/Nevrdid/TermSP/blob/master/libs/libsdlfox.so
 
-lib/libsdlfox.so:
-	docker buildx build --platform linux/arm64 --load --build-arg BUILD_DATE=$(BUILD_DATE) -f Dockerfile.termsp --progress plain -t app/termsp:$(TAG) .
-	docker container create --name extract app/termsp:$(TAG)
-	docker container cp extract:/go/src/github.com/Nevrdid/TermSP/libs/libsdlfox.so lib/libsdlfox.so
-	docker container rm extract
-
-lib/libvterm.so.0:
-	docker buildx build --platform linux/arm64 --load --build-arg BUILD_DATE=$(BUILD_DATE) -f Dockerfile.termsp --progress plain -t app/termsp:$(TAG) .
-	docker container create --name extract app/termsp:$(TAG)
-	docker container cp extract:/go/src/github.com/Nevrdid/TermSP/libs/libvterm.so lib/libvterm.so.0
-	docker container rm extract
+lib/arm64/libvterm.so.0:
+	mkdir -p lib/arm64
+	curl -o lib/arm64/libvterm.so.0 -sSL https://github.com/Nevrdid/TermSP/blob/master/libs/libvterm.so
 
 res/fonts/Hack-Regular.ttf:
+	mkdir -p res/fonts
 	curl -sL https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.gz | tar -xz -C res/fonts/ --strip-components=1 "ttf/Hack-Regular.ttf"
 
 res/fonts/Hack-Bold.ttf:
-	curl -sL https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.gz | tar -xz -C res/fonts/ --strip-components=1 "ttf/Hack-Bold.ttf"
-
-res/fonts/BPreplayBold.otf:
 	mkdir -p res/fonts
-	curl -sSL -o res/fonts/BPreplayBold.otf "https://raw.githubusercontent.com/shauninman/MinUI/refs/heads/main/skeleton/SYSTEM/res/BPreplayBold-unhinted.otf"
+	curl -sL https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.tar.gz | tar -xz -C res/fonts/ --strip-components=1 "ttf/Hack-Bold.ttf"
 
 release: build
 	mkdir -p dist

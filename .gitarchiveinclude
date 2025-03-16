@@ -1,7 +1,7 @@
-bin/sdl2imgshow
-bin/termsp
+bin/arm64/termsp
+bin/rg35xxplus/minui-presenter
+bin/tg5040/minui-presenter
 lib/libsdlfox.so
 lib/libvterm.so.0
-res/fonts/BPreplayBold.otf
-res/fonts/Hack-Regular.ttf
 res/fonts/Hack-Bold.ttf
+res/fonts/Hack-Regular.ttf
