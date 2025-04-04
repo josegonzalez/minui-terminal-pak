@@ -36,4 +36,4 @@ The order of shell detection is as follows:
 
 ### Debug Logging
 
-To enable debug logging, create a file named `debug` in the `$SDCARD_PATH/.userdata/$PLATFORM/Terminal` folder. Logs will be written to the `$SDCARD_PATH/.userdata/$PLATFORM/logs/` folder.
+Debug logs are written to the`$SDCARD_PATH/.userdata/$PLATFORM/logs/` folder.
