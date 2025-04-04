@@ -8,10 +8,10 @@ TERMSP_VERSION=0.1.0
 clean:
 	rm -f bin/*/minui-presenter || true
 	rm -f bin/*/termsp || true
-	rm -f lib/libsdlfox.so || true
-	rm -f lib/libvterm.so.0 || true
-	rm -f res/fonts/Hack-Regular.ttf || true
+	rm -f lib/arm64/libsdlfox.so || true
+	rm -f lib/arm64/libvterm.so.0 || true
 	rm -f res/fonts/Hack-Bold.ttf || true
+	rm -f res/fonts/Hack-Regular.ttf || true
 
 build: $(foreach platform,$(PLATFORMS),bin/$(platform)/minui-presenter) $(foreach architecture,$(ARCHITECTURES),bin/$(architecture)/termsp lib/$(architecture)/libsdlfox.so lib/$(architecture)/libvterm.so.0) res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf
 
