@@ -28,11 +28,11 @@ bin/arm64/termsp:
 
 lib/arm64/libsdlfox.so:
 	mkdir -p lib/arm64
-	curl -o lib/arm64/libsdlfox.so -sSL https://github.com/Nevrdid/TermSP/blob/master/libs/libsdlfox.so
+	curl -o lib/arm64/libsdlfox.so -sSL https://github.com/Nevrdid/TermSP/raw/refs/heads/master/libs/libsdlfox.so
 
 lib/arm64/libvterm.so.0:
 	mkdir -p lib/arm64
-	curl -o lib/arm64/libvterm.so.0 -sSL https://github.com/Nevrdid/TermSP/blob/master/libs/libvterm.so
+	curl -o lib/arm64/libvterm.so.0 -sSL https://github.com/Nevrdid/TermSP/raw/refs/heads/master/libs/libvterm.so
 
 res/fonts/Hack-Regular.ttf:
 	mkdir -p res/fonts
