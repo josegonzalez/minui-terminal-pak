@@ -87,7 +87,7 @@ main() {
         return 1
     fi
 
-    chmod +x "$PAK_DIR/bin/minui-presenter"
+    chmod +x "$PAK_DIR/bin/$PLATFORM/minui-presenter"
 
     service_on
     killall minui-presenter >/dev/null 2>&1 || true
