@@ -24,6 +24,19 @@ Use the correct platform for your device.
 
 Browse to `Tools > Terminal` and press `A` to turn on the terminal.
 
+Once in the terminal, the following keyboard shortcuts will work (as noted for the `tg5040`:
+
+- `MENU`: Exits the terminal
+- `Y`: Displays an onscreen keyboard
+- `X`: Toggles the position of the onscreen keyboard from top to bottom
+- `A`: Press key in keyboard
+- `B`: Backspace
+- `L1`: Shift
+- `R1`: Toggle key (for shift/ctrl...)
+- `START`: Enter
+- `SELECT`: Tab
+- `UP/DOWN`: Navigate history
+
 ### shell
 
 The terminal detects the available shells and uses the first one it finds. To utilize a different shell, create a file named `shell` in the pak folder with the full path to the shell you wish to execute.
