@@ -2,6 +2,7 @@
     "label": "Terminal",
     "launch": "launch.sh",
     "description": "Manages the Terminal",
+    "pak_type": "tool",
     "platforms": [
         "rg35xxplus",
         "tg5040"
