@@ -1,0 +1,14 @@
+{
+  "name": "Terminal",
+  "type": "TOOL",
+  "description": "Manages the Terminal",
+  "author": "josegonzalez",
+  "repo_url": "https://github.com/josegonzalez/minui-terminal-pak",
+  "release_filename": "Terminal.pak.zip",
+  "platforms": [
+    "rg35xxplus",
+    "tg5040"
+  ],
+  "launch": "launch.sh",
+    "version": "latest"
+}
