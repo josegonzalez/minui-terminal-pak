@@ -76,7 +76,7 @@ main() {
     echo "1" >/tmp/stay_awake
     trap "cleanup" EXIT INT TERM HUP QUIT
 
-    allowed_platforms="tg5040 rg35xxplus"
+    allowed_platforms="my355 tg5040 rg35xxplus"
     if ! echo "$allowed_platforms" | grep -q "$PLATFORM"; then
         show_message "$PLATFORM is not a supported platform" 2
         return 1
