@@ -2,6 +2,7 @@ bin/arm64/termsp
 bin/my355/minui-presenter
 bin/rg35xxplus/minui-presenter
 bin/tg5040/minui-presenter
+bin/tg5050/minui-presenter
 lib/arm64/libsdlfox.so
 lib/arm64/libvterm.so.0
 lib/arm64/libsdlfox.so
