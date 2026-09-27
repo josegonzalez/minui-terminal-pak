@@ -6,10 +6,14 @@ PUSH_SDCARD_PATH ?= /mnt/SDCARD
 PUSH_PLATFORM ?= tg5040
 
 ARCHITECTURES := arm64
-PLATFORMS := my355 rg35xxplus tg5040 tg5050
+PLATFORMS := h700 my355 rg35xxplus tg5040 tg5050
 
-MINUI_PRESENTER_VERSION := 0.12.0
+MINUI_PRESENTER_VERSION := 0.13.4
 TERMSP_VERSION=0.1.0
+
+# NextUI on BaseOS ships no libfontconfig, so the h700 build takes it from the toolchain sysroot
+H700_TOOLCHAIN_IMAGE ?= savant/minui-toolchain:h700-nextui
+H700_SYSROOT_LIB := /opt/aarch64-nextui-linux-gnu/aarch64-nextui-linux-gnu/libc/usr/lib
 
 RELEASE_VERSION ?= latest
 
@@ -18,10 +22,21 @@ clean:
 	rm -f bin/*/termsp || true
 	rm -f lib/arm64/libsdlfox.so || true
 	rm -f lib/arm64/libvterm.so.0 || true
+	rm -f lib/h700/libfontconfig.so.1 || true
 	rm -f res/fonts/Hack-Bold.ttf || true
 	rm -f res/fonts/Hack-Regular.ttf || true
 
-build: $(foreach platform,$(PLATFORMS),bin/$(platform)/minui-presenter) $(foreach architecture,$(ARCHITECTURES),bin/$(architecture)/termsp lib/$(architecture)/libsdlfox.so lib/$(architecture)/libvterm.so.0) res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf
+build: $(foreach platform,$(PLATFORMS),bin/$(platform)/minui-presenter) $(foreach architecture,$(ARCHITECTURES),bin/$(architecture)/termsp lib/$(architecture)/libsdlfox.so lib/$(architecture)/libvterm.so.0) lib/h700/libfontconfig.so.1 res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf
+
+bin/h700/minui-presenter:
+	mkdir -p bin/h700
+	curl -f -o bin/h700/minui-presenter -sSL https://github.com/josegonzalez/minui-presenter/releases/download/$(MINUI_PRESENTER_VERSION)/minui-presenter-h700-nextui
+	chmod +x bin/h700/minui-presenter
+
+bin/tg5050/minui-presenter:
+	mkdir -p bin/tg5050
+	curl -f -o bin/tg5050/minui-presenter -sSL https://github.com/josegonzalez/minui-presenter/releases/download/$(MINUI_PRESENTER_VERSION)/minui-presenter-tg5050-nextui
+	chmod +x bin/tg5050/minui-presenter
 
 bin/%/minui-presenter:
 	mkdir -p bin/$*
@@ -40,6 +55,11 @@ lib/arm64/libsdlfox.so:
 lib/arm64/libvterm.so.0:
 	mkdir -p lib/arm64
 	curl -o lib/arm64/libvterm.so.0 -sSLf https://github.com/Nevrdid/TermSP/raw/refs/heads/master/libs/libvterm.so
+
+lib/h700/libfontconfig.so.1:
+	mkdir -p lib/h700
+	docker run --rm $(H700_TOOLCHAIN_IMAGE) cat $(H700_SYSROOT_LIB)/libfontconfig.so.1 > lib/h700/libfontconfig.so.1.tmp
+	mv lib/h700/libfontconfig.so.1.tmp lib/h700/libfontconfig.so.1
 
 res/fonts/Hack-Regular.ttf:
 	mkdir -p res/fonts

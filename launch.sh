@@ -17,8 +17,22 @@ if uname -m | grep -q '64'; then
     architecture=arm64
 fi
 
-export LD_LIBRARY_PATH="$PAK_DIR/lib/$architecture:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$PAK_DIR/lib/$architecture:$PAK_DIR/lib/$PLATFORM:$LD_LIBRARY_PATH"
 export PATH="$PAK_DIR/bin/$architecture:$PAK_DIR/bin/$PLATFORM:$PAK_DIR/bin:$PATH"
+
+if [ "$DEVICE" = "rgsp" ]; then
+    export RGXX_MODEL="RG34xx"
+fi
+
+get_font_size() {
+    # 27 suits 720 pixel tall screens, so scale it down on the 480 pixel tall h700 panels
+    if [ "$PLATFORM" = "h700" ] && [ "$DEVICE" != "rgcubexx" ]; then
+        echo 18
+        return
+    fi
+
+    echo 27
+}
 
 service_on() {
     cd "$SDCARD_PATH" || return 1
@@ -47,7 +61,7 @@ service_on() {
         fi
     fi
 
-    SHELL="$shell" termsp -s 27 -f "$PAK_DIR/res/fonts/Hack-Regular.ttf" -b "$PAK_DIR/res/fonts/Hack-Bold.ttf" >"$LOGS_PATH/$PAK_NAME.service.txt" 2>&1
+    SHELL="$shell" termsp -s "$(get_font_size)" -f "$PAK_DIR/res/fonts/Hack-Regular.ttf" -b "$PAK_DIR/res/fonts/Hack-Bold.ttf" >"$LOGS_PATH/$PAK_NAME.service.txt" 2>&1
 }
 
 show_message() {
@@ -76,7 +90,12 @@ main() {
     echo "1" >/tmp/stay_awake
     trap "cleanup" EXIT INT TERM HUP QUIT
 
-    allowed_platforms="my355 rg35xxplus tg5040 tg5050"
+    if [ "$PLATFORM" = "tg3040" ] && [ -z "$DEVICE" ]; then
+        export DEVICE="brick"
+        export PLATFORM="tg5040"
+    fi
+
+    allowed_platforms="h700 my355 rg35xxplus tg5040 tg5050"
     if ! echo "$allowed_platforms" | grep -q "$PLATFORM"; then
         show_message "$PLATFORM is not a supported platform" 2
         return 1

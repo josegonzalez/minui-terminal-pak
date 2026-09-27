@@ -6,6 +6,7 @@ A MinUI app wrapping [`TermSP`](https://github.com/Nevrdid/TermSP), a terminal e
 
 This pak is designed and tested on the following MinUI Platforms and devices:
 
+- `h700`: Anbernic RG28XX, RG34XX, RG34XX SP, RG35XX Plus, RG35XX 2024, RG35XX H, RG35XX Pro, RG35XX SP, RG40XX H, RG40XX V, RG CubeXX and RG SP, running NextUI on BaseOS
 - `my355`: Miyoo Flip
 - `rg35xxplus`: RG-35XX Plus, RG-34XX, RG-35XX H, RG-35XX SP
 - `tg5040`: Trimui Brick (formerly `tg3040`), Trimui Smart Pro
