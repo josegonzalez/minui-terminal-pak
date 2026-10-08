@@ -3,4 +3,6 @@
 .gitarchiveinclude export-ignore
 .gitignore export-ignore
 Dockerfile.termsp export-ignore
+Dockerfile.termsp-h700 export-ignore
 Makefile export-ignore
+patches export-ignore

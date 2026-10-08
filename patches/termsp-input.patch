@@ -1,0 +1,47 @@
+diff --git a/src/EVENTS.c b/src/EVENTS.c
+index 3625ecc..35714aa 100755
+--- a/src/EVENTS.c
++++ b/src/EVENTS.c
+@@ -180,11 +180,11 @@ int handleJoyButtons(SDL_Event *ev) {
+                 case 1:  // A button (b1)
+                     KEYB_ClickKey();
+                     break;
+-                case 2:  // X button (b2)
++                case 2:  // Y button (b2)
+                     KEYB_Toggle();
+                     return 1;
+                     break;
+-                case 3:  // Y button (b3)
++                case 3:  // X button (b3)
+                     KEYB_SwitchLocation();
+                     break;
+                 case 4:  // Left Shoulder (L1) (b4)
+@@ -255,6 +255,7 @@ int handleJoyAxis(SDL_Event *ev) {
+         case 1:  // Left Stick Y-Axis
+             if (ev->jaxis.value < -16000) KEYB_SimulateKey(SDLK_UP, STATE_TYPED);
+             else if (ev->jaxis.value > 16000) KEYB_SimulateKey(SDLK_DOWN, STATE_TYPED);
++            break;
+         case 2:  // Left Trigger
+ 
+             if (ev->jaxis.value == 32767) KEYB_SimulateKey(SDLK_F3, STATE_TYPED);
+diff --git a/src/KEYB.c b/src/KEYB.c
+index 9e760e0..8cb0eea 100755
+--- a/src/KEYB.c
++++ b/src/KEYB.c
+@@ -27,12 +27,12 @@ char *help =
+     "  B:          backspace\n"
+     "  L1:         shift\n"
+     "  R1:         toggle key (for shift/ctrl...)\n"
+-    "  Y:          change keyboard location\n"
+-    "  X:          show / hide keyboard\n"
++    "  X:          change keyboard location\n"
++    "  Y:          show / hide keyboard\n"
+     "  START:      enter\n"
+     "  SELECT:     tab\n"
+-    "  L2:         left\n"
+-    "  R2:         right\n"
++    "  L2:         F3\n"
++    "  R2:         F4\n"
+     "  MENU:       quit\n\n"
+     "Cheatcheet (tutorial at www.shellscript.sh):\n"
+     "  TAB key         complete path\n"

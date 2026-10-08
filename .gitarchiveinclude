@@ -1,5 +1,6 @@
 bin/arm64/termsp
 bin/h700/minui-presenter
+bin/h700/termsp
 bin/my355/minui-presenter
 bin/rg35xxplus/minui-presenter
 bin/tg5040/minui-presenter

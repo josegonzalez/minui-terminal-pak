@@ -18,7 +18,7 @@ if uname -m | grep -q '64'; then
 fi
 
 export LD_LIBRARY_PATH="$PAK_DIR/lib/$architecture:$PAK_DIR/lib/$PLATFORM:$LD_LIBRARY_PATH"
-export PATH="$PAK_DIR/bin/$architecture:$PAK_DIR/bin/$PLATFORM:$PAK_DIR/bin:$PATH"
+export PATH="$PAK_DIR/bin/$PLATFORM:$PAK_DIR/bin/$architecture:$PAK_DIR/bin:$PATH"
 
 if [ "$DEVICE" = "rgsp" ]; then
     export RGXX_MODEL="RG34xx"

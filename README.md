@@ -36,6 +36,8 @@ Once in the terminal, the following keyboard shortcuts will work (as noted for t
 - `B`: Backspace
 - `L1`: Shift
 - `R1`: Toggle key (for shift/ctrl...)
+- `L2`: F3
+- `R2`: F4
 - `START`: Enter
 - `SELECT`: Tab
 - `UP/DOWN`: Navigate history
