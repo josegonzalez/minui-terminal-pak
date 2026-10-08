@@ -9,7 +9,8 @@ ARCHITECTURES := arm64
 PLATFORMS := h700 my355 rg35xxplus tg5040 tg5050
 
 MINUI_PRESENTER_VERSION := 0.13.4
-TERMSP_VERSION=0.1.0
+TERMSP_VERSION := 5116aeda84b8d4bb125a214464c131c177260140
+TERMSP_IMAGE ?= minui-terminal-termsp
 
 # NextUI on BaseOS ships no libfontconfig, so the h700 build takes it from the toolchain sysroot
 H700_TOOLCHAIN_IMAGE ?= savant/minui-toolchain:h700-nextui
@@ -26,7 +27,7 @@ clean:
 	rm -f res/fonts/Hack-Bold.ttf || true
 	rm -f res/fonts/Hack-Regular.ttf || true
 
-build: $(foreach platform,$(PLATFORMS),bin/$(platform)/minui-presenter) $(foreach architecture,$(ARCHITECTURES),bin/$(architecture)/termsp lib/$(architecture)/libsdlfox.so lib/$(architecture)/libvterm.so.0) lib/h700/libfontconfig.so.1 res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf
+build: $(foreach platform,$(PLATFORMS),bin/$(platform)/minui-presenter) $(foreach architecture,$(ARCHITECTURES),bin/$(architecture)/termsp lib/$(architecture)/libsdlfox.so lib/$(architecture)/libvterm.so.0) bin/h700/termsp lib/h700/libfontconfig.so.1 res/fonts/Hack-Regular.ttf res/fonts/Hack-Bold.ttf
 
 bin/h700/minui-presenter:
 	mkdir -p bin/h700
@@ -43,10 +44,20 @@ bin/%/minui-presenter:
 	curl -f -o bin/$*/minui-presenter -fsSL https://github.com/josegonzalez/minui-presenter/releases/download/$(MINUI_PRESENTER_VERSION)/minui-presenter-$*
 	chmod +x bin/$*/minui-presenter
 
-bin/arm64/termsp:
+bin/arm64/termsp: Dockerfile.termsp patches/termsp-input.patch
 	mkdir -p bin/arm64
-	curl -o bin/arm64/termsp -fsSL https://github.com/josegonzalez/compiled-termsp/releases/download/$(TERMSP_VERSION)/termsp-arm64
-	chmod +x bin/arm64/termsp
+	docker buildx build --platform linux/arm64 --load --build-arg TERMSP_VERSION=$(TERMSP_VERSION) -f Dockerfile.termsp -t $(TERMSP_IMAGE):arm64 .
+	docker run --rm --platform linux/arm64 $(TERMSP_IMAGE):arm64 cat /go/src/github.com/Nevrdid/TermSP/build/TermSP > bin/arm64/termsp.tmp
+	chmod +x bin/arm64/termsp.tmp
+	mv bin/arm64/termsp.tmp bin/arm64/termsp
+
+# NextUI on BaseOS gets a termsp built against the NextUI toolchain sysroot
+bin/h700/termsp: Dockerfile.termsp-h700 patches/termsp-input.patch
+	mkdir -p bin/h700
+	docker build --build-arg TERMSP_VERSION=$(TERMSP_VERSION) -f Dockerfile.termsp-h700 -t $(TERMSP_IMAGE):h700 .
+	docker run --rm $(TERMSP_IMAGE):h700 cat /go/src/github.com/Nevrdid/TermSP/build/TermSP > bin/h700/termsp.tmp
+	chmod +x bin/h700/termsp.tmp
+	mv bin/h700/termsp.tmp bin/h700/termsp
 
 lib/arm64/libsdlfox.so:
 	mkdir -p lib/arm64

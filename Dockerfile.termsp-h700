@@ -1,0 +1,16 @@
+FROM ghcr.io/loveretro/h700-toolchain@sha256:c9d160c407570a771683e6a471757b44f6e155a7df7d1804c70f901ee3890da3
+
+ARG TERMSP_VERSION=5116aeda84b8d4bb125a214464c131c177260140
+ENV TERMSP_VERSION=$TERMSP_VERSION
+
+RUN git clone https://github.com/Nevrdid/TermSP /go/src/github.com/Nevrdid/TermSP && \
+    git -C /go/src/github.com/Nevrdid/TermSP checkout "$TERMSP_VERSION"
+
+WORKDIR /go/src/github.com/Nevrdid/TermSP
+COPY patches/termsp-input.patch /tmp/termsp-input.patch
+RUN git apply /tmp/termsp-input.patch
+# upstream's Makefile hardcodes cc and sdl2-config, so build against the NextUI sysroot directly
+RUN mkdir -p build && "$CC" -Wall -O3 -flto \
+    -I"$SYSROOT/usr/include/SDL2" -Iincludes \
+    '-DSCREENRC="/mnt/SDCARD/Apps/Terminal/.screenrc"' \
+    src/*.c -o build/TermSP -Wl,--gc-sections -lSDL2 -lutil -Llibs -lsdlfox -lvterm
